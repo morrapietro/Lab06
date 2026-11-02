@@ -12,8 +12,8 @@ class Strumento:
 
     def __str__(self):
         stato = "Disponibile" if self.disponibile else "In prestito"
-        return f"{self.codice} | {self.tipo} {self.marca} ({self.anno_acquisto}) | {self.valore:.2f}€ | {stato}"
+        return f"{self.codice} | {self.tipo} | {self.marca} | ({self.anno_acquisto}) | {self.valore:.2f}€ | {stato}"
 
     def __repr__(self):
         stato = "Disponibile" if self.disponibile else "In prestito"
-        return f"{self.codice} | {self.tipo} {self.marca} ({self.anno_acquisto}) | {self.valore:.2f}€ | {stato}"
+        return f"{self.codice} | {self.tipo} | {self.marca} | ({self.anno_acquisto}) | {self.valore:.2f}€ | {stato}"

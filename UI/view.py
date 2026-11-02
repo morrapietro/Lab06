@@ -53,7 +53,7 @@ class View:
         self.lista_strumenti = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
 
         # TextField per ricerca strumento per tipo
-        self.input_tipo_strumento = ft.TextField(label="Tipo")
+        self.input_tipo_strumento = ft.TextField(label="Tipo", width=200)
 
         # ListView per mostrare il risultato della ricerca strumenti per tipo
         self.lista_strumenti_ricerca = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
@@ -77,26 +77,26 @@ class View:
 
             # Sezione 2
             ft.Text("Modifica Informazioni", size=20),
-            ft.Row(spacing=200,
+            ft.Row(spacing=20,
                    controls=[self.input_responsabile, pulsante_conferma_responsabile],
                    alignment=ft.MainAxisAlignment.CENTER),
             ft.Divider(),
 
             # Sezione 3 -> va reso più largo
-            ft.Row(spacing=200,
-                   controls=[ft.Text("Strumenti", size=20), pulsante_mostra_lista_strumenti], # il pulsante mostra non dovrebbe stare al centro ma attaccato alla Text strumenti
-                   alignment =ft.MainAxisAlignment.START
-                   ),
+            ft.Row(spacing=20,
+                   controls=[ft.Text("Strumenti", size=20), pulsante_mostra_lista_strumenti],
+                   alignment =ft.MainAxisAlignment.START),
+            self.lista_strumenti,
             ft.Divider(),
 
             # Sezione 4
             ft.Text("Cerca Strumento per Tipo", size=20),
-            ft.Row(spacing=200,
-                   controls=[self.input_tipo_strumento, pulsante_cerca_strumento_per_tipo], # il pulsante cerca non dovrebbe stare al centro ma attaccato alla Textfield tipo
-                   alignment =ft.MainAxisAlignment.START
-                   intrinsic_height = 300,
-                   ),
+            ft.Row(spacing=20,
+                   controls=[self.input_tipo_strumento, pulsante_cerca_strumento_per_tipo],
+                   alignment =ft.MainAxisAlignment.START),
+            self.lista_strumenti_ricerca,
         )
+        self.page.update()
 
     def cambia_tema(self, e):
         self.page.theme_mode = ft.ThemeMode.DARK if self.toggle_cambia_tema.value else ft.ThemeMode.LIGHT

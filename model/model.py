@@ -4,8 +4,6 @@ from database.DB_connect import get_connection
 from model.strumento import Strumento
 from model.prestito import Prestito
 
-from UI.view import View
-
 '''
     MODELLO:
     - Rappresenta la struttura dati
@@ -39,20 +37,40 @@ class DepositoStrumenti:
             Funzione che legge tutti gli strumenti nel database
             :return: una lista con tutti gli strumenti presenti oppure None
         """
+        cnx = get_connection()
+        if cnx is None:
+            return None
 
-        # AGGIUNGERE OPZIONE: return None
-        my_cursor = get_connection().cnx.cursor()
-        query = f'''
+        cursor = cnx.cursor(dictionary=True)
+        query = f"""
                     SELECT * 
                     FROM strumento
-                 '''
-        my_cursor.execute(query)
-        lista_strumenti = []
+                """
 
-        for row in my_cursor:
-            lista_strumenti.append(row)
+        try:
+            cursor.execute(query)
+            lista_strumenti = []
+            for row in cursor:
+                strumento = Strumento(
+                    row["codice"],
+                    row["tipo"],
+                    row["marca"],
+                    row["anno_acquisto"],
+                    row["valore"],
+                    bool(row["disponibile"])
+                )
+                lista_strumenti.append(strumento)
+            cursor.close()
+            cnx.close()
+            return lista_strumenti
+        except Exception as e:
+            print(e)
+            if cursor:
+                cursor.close()
+            if cnx:
+                cnx.close()
+            return None
 
-        return lista_strumenti
 
     def cerca_strumenti_per_tipo(self, tipo) -> list[Strumento] | None:
         """
@@ -60,17 +78,39 @@ class DepositoStrumenti:
             :param tipo: il tipo dello strumento (es. "Chitarra")
             :return: una lista con tutti gli strumenti del tipo indicato oppure None
         """
+        cnx = get_connection()
+        if cnx is None:
+            return None
 
-        # AGGIUNGERE OPZIONE: return None
-        cursore_dizionario = get_connection().cnx.cursor(dictionary=True)
-
-        tipo = self.view.input_tipo_strumento
-
-        query = f'''
+        cursor = cnx.cursor(dictionary=True)
+        query = f"""
                     SELECT * 
                     FROM strumento
-                    WHERE tipo = '%s'
-                 '''
-        cursore_dizionario.execute(query, (tipo, ))
+                    WHERE tipo = %s
+                """
 
+        try:
+            cursor.execute(query, (tipo,))
+            lista_strumenti = []
+            for row in cursor:
+                strumento = Strumento(
+                    row["codice"],
+                    row["tipo"],
+                    row["marca"],
+                    row["anno_acquisto"],
+                    row["valore"],
+                    bool(row["disponibile"])
+                )
+                lista_strumenti.append(strumento)
+            cursor.close()
+            cnx.close()
+            return lista_strumenti
+
+        except Exception as e:
+            print(e)
+            if cursor:
+                cursor.close()
+            if cnx:
+                cnx.close()
+            return None
 
